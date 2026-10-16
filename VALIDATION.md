@@ -1,3 +1,16 @@
+# Kiểm chứng bản 2.1.1 — public 1 offline
+
+- 113/113 unit/integration tests đạt trong Python 3.12 sạch.
+- Public 1: 20/20 exact match với sample_submission.csv được cung cấp; public 2: 30/30 với answers.json. Không câu trống, không sai, không request API.
+- Kiểm tra engine trong bộ nhớ: đổi tên sheet/path, dịch 5 hàng và 2 cột; public1 vẫn 20/20, public2 vẫn 30/30. Không phải serialize lại XLSX.
+- Bổ sung 10 test tổng hợp dùng ngày, năm, nhóm, số liệu mới; vị trí bảng thay đổi theo hàng và cột. Test fail trước khi thêm selector.
+- Tuổi trong bảng Birth/Admission được tính bằng số ngày từ ngày sinh đến ngày nhập học của từng người. Câu không nêu mốc tuổi được hiểu theo sự kiện Admission trong bảng; không dùng ngày hiện tại. Đây là quy ước của selector hữu hạn, không phải suy luận đúng cho mọi bảng người.
+- Chọn top N theo tuổi rồi lấy max/min điểm; chọn đúng fiscal/calendar YTD; cực đại trị tuyệt đối của cột unadjusted đúng khoảng tháng; phân biệt số người với phân phối phần trăm; chọn average total thay vì full-time.
+- Không dùng ID, filename hoặc đáp án mẫu để trả lời. Đáp án tham chiếu chỉ được đọc ở công cụ đánh giá sau khi solver hoàn tất.
+- 100% chỉ xác nhận hai bộ công khai đang có, không bảo đảm tập ẩn. Chưa thử API thật hoặc GUI Windows ở bản này.
+
+## Kiểm chứng lịch sử 2.1.0
+
 # Kiểm chứng bản 2.1.0 — ngữ nghĩa và phạm vi bảng
 
 - 103/103 unit/integration tests đạt trong môi trường Python 3.12 sạch, thư viện khóa hash.

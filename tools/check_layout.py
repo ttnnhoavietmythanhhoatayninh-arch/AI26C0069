@@ -7,7 +7,11 @@ from excelqa.solver import execute
 import argparse
 p=argparse.ArgumentParser(description='Offline in-memory layout mutation check; never modifies input XLSX')
 p.add_argument('--data-dir',required=True);args=p.parse_args()
-root=Path(args.data_dir);queries=json.loads((root/'queries.json').read_text());gold={str(x['id']):x['answer'] for x in json.loads((root/'answers.json').read_text())}
+root=Path(args.data_dir);queries=json.loads((root/'queries.json').read_text())
+if (root/'answers.json').exists():gold={str(x['id']):x['answer'] for x in json.loads((root/'answers.json').read_text())}
+else:
+ import csv
+ with (root/'sample_submission.csv').open(encoding='utf-8-sig',newline='') as f:gold={str(x['id']):x['answer'] for x in csv.DictReader(f)}
 results=[]
 for q in queries:
  b=Book(root/'xlsx_files'/q['file_name']);b.path=Path('different_workbook.xlsx');b._map={}

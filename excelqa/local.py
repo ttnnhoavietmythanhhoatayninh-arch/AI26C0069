@@ -53,6 +53,9 @@ def meta(s):
     return rs,headers,leaves,scopes
 
 def _local_plan(book,query):
+    from .event_tables import plan as event_plan
+    event=event_plan(book,query)
+    if event is not None:return event
     from .semantics import semantic_plan,handles_query
     semantic=semantic_plan(book,query)
     if semantic is not None:return semantic

@@ -15,9 +15,9 @@ def main():
     for i,(title,sub) in enumerate([('Excel + câu hỏi','Nhiều sheet, ô gộp'),('Python','Tra cứu và tính toán'),('Qwen khi cần','Kế hoạch JSON'),('CSV','id,answer · UTF-8')]):
         x=120+i*305;p += [text(x,610,f'0{i+1}',27,'#72e9d0','700'),text(x,655,title,25,weight='700'),text(x,693,sub,18,'#a9bcd5')]
     p += [text(80,825,'KẾT QUẢ ĐÃ ĐO · KHÔNG GỌI API',28,'#72e9d0','700')]
-    for x,n,label in [(80,'14/20','Dữ liệu công khai đợt 1'),(720,'30/30','Dữ liệu công khai đợt 2')]:
+    for x,n,label in [(80,'20/20','Dữ liệu công khai đợt 1'),(720,'30/30','Dữ liệu công khai đợt 2')]:
         p += [rect(x,870,600,235,'#182b44'),text(x+42,985,n,86,weight='700'),text(x+44,1055,label,24,'#a9bcd5')]
-    p += [text(85,1155,'103 test đạt · Có bằng chứng ô nguồn · Không thực thi mã do LLM sinh',24),text(85,1200,'Public 1 còn 6 câu trống; public 2 đã giải đủ 30 câu.',23,'#a9bcd5'),text(85,1243,'Kết quả offline không đại diện điểm tập ẩn hoặc chất lượng Qwen.',22,'#a9bcd5')]
+    p += [text(85,1155,'113 test đạt · Có bằng chứng ô nguồn · Không thực thi mã do LLM sinh',24),text(85,1200,'Public 1 giải đủ 20 câu; public 2 giải đủ 30 câu.',23,'#a9bcd5'),text(85,1243,'Kết quả offline không đại diện điểm tập ẩn hoặc chất lượng Qwen.',22,'#a9bcd5')]
     p += [rect(80,1310,1240,360,'#14263e'),text(120,1373,'HAI CÁCH SỬ DỤNG',28,'#72e9d0','700'),text(120,1440,'LOCAL',28,weight='700'),text(120,1484,'Giao diện Python tùy chọn · Offline hoặc hybrid',25),text(120,1555,'BÀI CHẤM',28,weight='700'),text(120,1599,'Docker Linux amd64 · CLI nhận sáu tham số BTC',25)]
     p += [text(80,1760,'Minh bạch về chi phí và giới hạn',35,weight='700'),text(80,1818,'Offline: không phí API. Hybrid: chỉ mô hình BTC quy định, có thể tính phí.',23,'#a9bcd5'),text(80,1861,'API thật bản cũ: 3/5 đúng; bản vá mới chưa thử lại API.',23,'#a9bcd5'),text(80,1920,'github.com/ttnnhoavietmythanhhoatayninh-arch/AI26C0069',21,'#72e9d0')]
     poster=svg(1400,1980,''.join(p));(out/'poster.svg').write_text(poster,encoding='utf-8')

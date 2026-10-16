@@ -2,9 +2,9 @@
 
 Giải pháp hỏi đáp Excel cho Vòng Khu vực Bảng C, Cuộc thi Sáng tạo trẻ Quốc gia về AI 2026.
 
-**Bản 2.1.0**: đọc nhiều sheet và ô gộp, bảo toàn tọa độ ô/tiêu đề, tính bằng Python trước; câu chưa hỗ trợ dùng đúng `qwen/qwen3.7-flash` qua OpenRouter. Mô hình trả kế hoạch JSON, không sinh mã để `exec`. Không chứa API key hoặc bộ đáp án.
+**Bản 2.1.1**: đọc nhiều sheet và ô gộp, bảo toàn tọa độ ô/tiêu đề, tính bằng Python trước; câu chưa hỗ trợ dùng đúng `qwen/qwen3.7-flash` qua OpenRouter. Mô hình trả kế hoạch JSON, không sinh mã để `exec`. Không chứa API key hoặc bộ đáp án.
 
-**Kết quả thực đo, offline**: public 1 đúng 14/20, 6 rỗng; public 2 đúng 30/30, 0 rỗng; 0 đáp án sai không rỗng trong cả hai lượt. 103 test đạt. Không diễn giải kết quả này thành chất lượng Qwen hoặc điểm bộ ẩn. Xem [VALIDATION.md](VALIDATION.md).
+**Kết quả thực đo, offline**: public 1 đúng 20/20, 0 rỗng; public 2 đúng 30/30, 0 rỗng; 0 đáp án sai không rỗng trong cả hai lượt. 113 test đạt. Không diễn giải kết quả này thành chất lượng Qwen hoặc điểm bộ ẩn. Xem [VALIDATION.md](VALIDATION.md).
 
 ## Chạy nhanh trên Windows, không phát sinh phí API
 
