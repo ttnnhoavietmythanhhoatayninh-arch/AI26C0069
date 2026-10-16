@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+.env.*
+output/
+dist/
+validation/
+xlsx_files/
+queries.json
+answers.json
+submission.csv
+*.log
