@@ -44,7 +44,7 @@ def financial(book,q):
             for date in (m[2],m[3]):
                 hits=[]
                 for c in range(1,s.cols+1):
-                    hs=' '.join(norm(s.expanded(rr,c)) for rr in range(1,min(r,7))).replace('totalfair','total fair')
+                    hs=' '.join(norm(s.expanded(rr,c)) for rr in range(1,r)).replace('totalfair','total fair')
                     if norm(date) in hs and 'total fair value' in hs and numeric(s.value(r,c)) is not None:hits.append(c)
                 if len(hits)!=1:break
                 cols.append(hits[0])
@@ -62,7 +62,7 @@ def financial(book,q):
                     if norm(source)!=norm(label):continue
                     cols=[]
                     for cc in range(c+1,s.cols+1):
-                        hs=' '.join(norm(s.expanded(rr,cc)) for rr in range(1,min(r,7)))
+                        hs=' '.join(norm(s.expanded(rr,cc)) for rr in range(1,r))
                         if re.search(r'\b'+m[3]+r'\b',hs) and 'average' not in hs and numeric(s.value(r,cc)) is not None:cols.append(cc)
                     if len(cols)==1:cells.append(cell(s,r,cols[0]))
                 if len(cells)!=1:break
@@ -136,7 +136,7 @@ def index_comparison(s,q):
         if len(found)!=1:return None
         r,lc=found[0];cs=[]
         for c in range(lc+1,s.cols+1):
-            hs=' '.join(norm(s.expanded(rr,c)) for rr in range(1,min(r,8)))
+            hs=' '.join(norm(s.expanded(rr,c)) for rr in range(1,r))
             if m:match=norm(m[1]) in hs
             else:match='unadjusted percent change' in hs and norm(a[1]) in hs and norm(a[2]) in hs
             if match and numeric(s.value(r,c)) is not None:cs.append(c)

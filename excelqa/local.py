@@ -52,7 +52,11 @@ def meta(s):
         scopes[r]=group
     return rs,headers,leaves,scopes
 
-def local_plan(book,query):
+def _local_plan(book,query):
+    from .semantics import semantic_plan,handles_query
+    semantic=semantic_plan(book,query)
+    if semantic is not None:return semantic
+    if handles_query(query):return None
     from .hierarchy import hierarchy_plan
     result=hierarchy_plan(book,query)
     if result is not None:return result
@@ -195,3 +199,10 @@ def person_plan(s,query):
     items=[{'label':ref(s,r,header[target][1]),'result':ref(s,r,header[target][1]),
             'value':op('days_between',ref(s,r,header['birth'][1]),ref(s,r,header['admission'][1]))} for r in rows]
     return {'expression':{'op':'pick','items':items,'n':n,'descending':'oldest' in q},'format':inferred_format(query)}
+
+
+def local_plan(book,query):
+    from .layout import project,restore
+    view,offsets=project(book)
+    plan=_local_plan(view,query)
+    return restore(plan,offsets) if plan is not None and offsets else plan

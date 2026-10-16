@@ -1,10 +1,9 @@
-# Hướng cải tiến tiếp theo
+# Hướng cải tiến tiếp theo sau 2.1.0
 
-1. Chạy Qwen thật trên một câu còn trống bằng key có quyền dùng; xác nhận kế hoạch, evidence, phí và thời gian.
-2. Đối chiếu 13 câu public2 offline chưa giải, phân biệt chưa chọn đúng vùng/thiếu phép tính/format.
-3. Bổ sung chỉ mục header cha-con, độ thụt dòng và phân nhóm tổng/con, kiểm thử số liệu và vị trí thay đổi.
-4. Truy xuất vùng theo câu hỏi cho workbook vượt context; không âm thầm cắt dữ liệu.
-5. Kiểm thử các ngôn ngữ khác và công thức thiếu cache. Không dùng mô hình ngoài BTC trong runtime.
-6. Giữ nhánh bảo thủ: câu mơ hồ để rỗng hoặc chuyển đúng Qwen; không trả lời sẵn theo ID.
+1. Kiểm tra 6 câu public1 còn trống: tuổi theo ngữ cảnh, phạm vi tổng và format; chưa suy diễn đáp án khi câu hỏi mơ hồ.
+2. Test ngoài public data với cột đảo thứ tự, thêm subtotal, nhiều bảng trùng chỉ tiêu, từ đồng nghĩa và công thức thiếu cache.
+3. Truy xuất vùng theo câu hỏi khi vượt context; không cắt dữ liệu âm thầm.
+4. Kiểm tra Qwen thật với một vài câu mới ngoài phạm vi local, đo phí/token/thời gian.
+5. Giữ exact model BTC và sáu tham số; GUI/poster không thuộc image chấm.
 
-Tối ưu phí bằng tăng phép tính local và tái dùng workbook, không thay Qwen bằng mô hình free không được BTC cho phép. GUI/poster không nằm trong luồng chấm.
+Không cố đạt điểm public bằng ID/tên tệp/đáp án mẫu. Từ vựng dịch khái niệm được phép dùng cho phân tích nhưng số kết quả phải tính từ dữ liệu nguồn. Khi không đủ căn cứ chuyển Qwen hoặc để trống.

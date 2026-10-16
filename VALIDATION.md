@@ -1,3 +1,17 @@
+# Kiểm chứng bản 2.1.0 — ngữ nghĩa và phạm vi bảng
+
+- 103/103 unit/integration tests đạt trong môi trường Python 3.12 sạch, thư viện khóa hash.
+- Public 2: 30/30 exact match, 0 trống, 0 sai; offline, 0 request API.
+- Public 1: 14/20 exact match, 6 trống, 0 đáp án sai không rỗng; không giảm so với bản trước.
+- Kiểm tra biến đổi trên đối tượng workbook trong bộ nhớ: đổi tên sheet, thay Book.path, dịch dữ liệu/merged ranges xuống 5 hàng và sang phải 2 cột. Public 2 vẫn 30/30; câu hỏi tên sheet trả theo tên mới. Không phải lượt serialize lại XLSX hoặc chấm API.
+- 26 test mới không dựa số liệu/ID/filename công khai: nhóm/năm/nhãn mới; số liệu mới; vị trí hàng/cột mới; quartile thiếu; tổng gây nhiễu; số phần trăm đã báo cáo; từ vựng Pháp/Hàn/Trung/Việt; cách hỏi equivalent; xếp hạng bằng nhau từ chối.
+- Test có fail trước sửa cho chức năng mới và phép chọn sai phạm vi; sau sửa các test cũ vẫn đạt.
+- Selector mới có phạm vi ngôn ngữ/layout hữu hạn. 100% public 2 không phải 100% public 1, không bảo đảm tập ẩn hoặc mọi cách diễn đạt.
+- Bản này chưa chạy Qwen thật. Giữ hybrid để hỗ trợ câu mới, đúng mô hình BTC; không có bảng tra đáp án runtime.
+- Xem workflow của commit mới để xác nhận Docker; bản trước đã build/run thành công trên GitHub Actions.
+
+## Kiểm chứng lịch sử
+
 # Kiểm chứng bản 2.0.1 — sửa từ log API người dùng
 
 - 77/77 unit/integration tests đạt.

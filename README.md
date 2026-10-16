@@ -2,9 +2,9 @@
 
 Giải pháp hỏi đáp Excel cho Vòng Khu vực Bảng C, Cuộc thi Sáng tạo trẻ Quốc gia về AI 2026.
 
-**Bản 2.0.1**: đọc nhiều sheet và ô gộp, bảo toàn tọa độ ô/tiêu đề, tính bằng Python trước; câu chưa hỗ trợ dùng đúng `qwen/qwen3.7-flash` qua OpenRouter. Mô hình trả kế hoạch JSON, không sinh mã để `exec`. Không chứa API key hoặc bộ đáp án.
+**Bản 2.1.0**: đọc nhiều sheet và ô gộp, bảo toàn tọa độ ô/tiêu đề, tính bằng Python trước; câu chưa hỗ trợ dùng đúng `qwen/qwen3.7-flash` qua OpenRouter. Mô hình trả kế hoạch JSON, không sinh mã để `exec`. Không chứa API key hoặc bộ đáp án.
 
-**Kết quả thực đo, offline**: public 1 đúng 14/20, 6 rỗng; public 2 đúng 19/30, 11 rỗng; 0 đáp án sai không rỗng trong cả hai lượt. 77 test đạt. Không diễn giải kết quả này thành chất lượng Qwen hoặc điểm bộ ẩn. Xem [VALIDATION.md](VALIDATION.md).
+**Kết quả thực đo, offline**: public 1 đúng 14/20, 6 rỗng; public 2 đúng 30/30, 0 rỗng; 0 đáp án sai không rỗng trong cả hai lượt. 103 test đạt. Không diễn giải kết quả này thành chất lượng Qwen hoặc điểm bộ ẩn. Xem [VALIDATION.md](VALIDATION.md).
 
 ## Chạy nhanh trên Windows, không phát sinh phí API
 
@@ -84,7 +84,7 @@ Thử ít câu cần LLM trước khi chạy toàn bộ. Mỗi câu dự trù t�
 
 402: kiểm tra quyền sử dụng/hạn mức/credit của khóa; không lặp chạy cả bộ hoặc tự đổi mô hình. 401: khóa không hợp lệ. Key BTC cung cấp khi chấm được truyền qua tham số; bài nộp không mang key cá nhân.
 
-**Qwen thật: người dùng đã cung cấp log 5 câu, đối chiếu đúng 3, sai 1, trống 1 ở bản 2.0.0. Bản 2.0.1 đã sửa hai dạng sai/trống và kiểm chứng offline; chưa có lượt Qwen thật mới sau sửa.** Không dùng khóa đã lộ trong ZIP cũ; nếu còn hoạt động, thu hồi và cấp lại.
+**Qwen thật: người dùng đã cung cấp log 5 câu, đối chiếu đúng 3, sai 1, trống 1 ở bản 2.0.0. Các bản 2.0.1 và 2.1.0 đã sửa và mở rộng xử lý offline; chưa có lượt Qwen thật mới sau sửa.** Không dùng khóa đã lộ trong ZIP cũ; nếu còn hoạt động, thu hồi và cấp lại.
 
 ## Đánh giá public data
 
@@ -151,3 +151,19 @@ Xem [docs/COMPLIANCE.md](docs/COMPLIANCE.md), [docs/MIGRATION.md](docs/MIGRATION
 - Request thất bại ghi cost_usd=null thay vì 0; xem cost_accounted_usd để biết mức đã hạch toán/dự trù.
 
 Sau khi cập nhật mã, chạy không có -SkipBuild để image chứa bản mới. Dùng hybrid cho vận hành bình thường: Python xử lý trước, Qwen chỉ xử lý phần còn lại. -Solver llm là chế độ thử buộc gọi API, bỏ qua lời giải local.
+
+## Bản 2.1.0: ngữ nghĩa, phạm vi và đa ngôn ngữ
+
+- Offline đo được 30/30 public 2, không phải bảo đảm 100% dữ liệu ẩn. Public 1 vẫn 14/20, còn 6 câu trống.
+- Bộ chọn tham số từ câu hỏi: giới/tuổi/năm; nhóm nghề; size class; mean/median/quartile; tỷ lệ kết hợp đã báo cáo.
+- Từ vựng đa ngôn ngữ ánh xạ khái niệm (không ánh xạ đáp án). Hỗ trợ có giới hạn một số mẫu Việt/Pháp/Hàn/Trung và cách diễn đạt tương đương; không phải mô hình hiểu ngôn ngữ tự do.
+- Loại cột trống đầu bảng cho việc lập kế hoạch rồi khôi phục tham chiếu tới cột nguồn thật. Bằng chứng ô luôn trỏ về bảng nguồn.
+- Thiếu ngữ cảnh, trùng tiêu đề hoặc xếp hạng bằng nhau thì từ chối trong các selector mới; hybrid chuyển sang Qwen.
+- 26 test bổ sung dùng dữ liệu/năm/nhãn khác, tiêu đề gộp, dịch hàng/cột, dữ liệu thiếu và phạm vi gây nhiễu.
+- Chạy kiểm tra đổi tên sheet/dịch bảng trong bộ nhớ, không ghi đè dữ liệu:
+
+```powershell
+.\.venv\Scripts\python.exe tools\check_layout.py --data-dir ".\Publicdata2"
+```
+
+Công cụ đối chiếu đáp án bên ngoài runtime, không nhập vào lời giải. Đổi tên file thực tế bằng cách cập nhật file_name trong JSON cũng được hỗ trợ bởi giao diện đầu vào.

@@ -1,8 +1,8 @@
 {
-  "version": "2.0.1",
+  "version": "2.1.0",
   "date": "2026-10-17",
   "python": "3.12.14",
-  "tests_passed": 77,
+  "tests_passed": 103,
   "mode": "offline",
   "live_api_tested": false,
   "windows_gui_tested": false,
@@ -14,18 +14,18 @@
       "answered": 14,
       "wrong_nonempty": 0,
       "unanswered": 6,
-      "seconds": 0.3678,
-      "peak_rss_mib": 23.85546875,
+      "seconds": 0.3036,
+      "peak_rss_mib": 23.859375,
       "llm_calls": 0
     },
     "public2": {
       "questions": 30,
-      "exact_match": 19,
-      "answered": 19,
+      "exact_match": 30,
+      "answered": 30,
       "wrong_nonempty": 0,
-      "unanswered": 11,
-      "seconds": 0.7115,
-      "peak_rss_mib": 30.1015625,
+      "unanswered": 0,
+      "seconds": 0.7133,
+      "peak_rss_mib": 30.2265625,
       "llm_calls": 0
     }
   },
@@ -36,5 +36,10 @@
     "unanswered": 1,
     "requests": 8,
     "cost_accounted_usd": "0.003665027"
+  },
+  "public2_layout_mutation": {
+    "questions": 30,
+    "correct": 30,
+    "method": "In-memory sheets renamed; cells/merges shifted 5 rows and 2 columns; source Book.path changed; sheet-name answers follow renamed sheet"
   }
 }
