@@ -6,6 +6,60 @@ Giải pháp hỏi đáp Excel cho Vòng Khu vực Bảng C, Cuộc thi Sáng t�
 
 **Kết quả thực đo, offline**: public 1 đúng 20/20, 0 rỗng; public 2 đúng 30/30, 0 rỗng; 0 đáp án sai không rỗng trong cả hai lượt. 113 test đạt. Không diễn giải kết quả này thành chất lượng Qwen hoặc điểm bộ ẩn. Xem [VALIDATION.md](VALIDATION.md).
 
+## Khi BTC cung cấp bộ dữ liệu mới
+
+### Tìm và chuẩn bị dữ liệu công khai
+
+Kiểm tra thông báo trên [hệ thống thi](https://ai.tainangviet.vn) và kênh chính thức của BTC để lấy đường dẫn tải. Chưa xác nhận rằng đợt tiếp theo sẽ nằm trong thư mục Drive cũ; luôn dùng đường dẫn BTC thông báo cho đợt đó. Chương trình không tự theo dõi hoặc tải dữ liệu từ Drive.
+
+Tải và giải nén vào một thư mục riêng, giữ nguyên các bộ cũ để đối chiếu. Thư mục truyền cho `-DataDir` phải chứa trực tiếp:
+
+- `queries.json`: danh sách câu hỏi, mỗi câu có `id`, `file_name`, `query`.
+- `xlsx_files`: chứa các tệp Excel; tên tệp phải khớp `file_name` trong JSON.
+
+Nếu ZIP có nhiều lớp thư mục, chọn thư mục trong cùng chứa đủ hai mục trên. Không cần chép dữ liệu vào mã nguồn hoặc Docker image. Các tệp đáp án tham chiếu, nếu BTC cung cấp, chỉ phục vụ đánh giá riêng; solver không cần và không đọc chúng để trả lời.
+
+### Chạy thử trên Windows, không phí API
+
+Mở PowerShell trong thư mục dự án hiện tại. Ví dụ:
+
+```powershell
+cd "C:\Users\PC\Downloads\AI26C0069"
+$dataMoi = Read-Host "Nhap duong dan thu muc du lieu moi"
+Test-Path "$dataMoi\queries.json"
+Test-Path "$dataMoi\xlsx_files"
+```
+
+Khi được hỏi, chỉ nhập đường dẫn thư mục, không nhập thêm câu lệnh. Cả hai kiểm tra phải hiện `True`. Sau đó chạy:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\RUN_WINDOWS.ps1 `
+  -DataDir "$dataMoi" `
+  -OutputDir "$env:USERPROFILE\Downloads\KetQua_DuLieuMoi" `
+  -Solver offline `
+  -Cpus 4
+```
+
+Chọn thư mục kết quả riêng cho mỗi lượt nếu muốn giữ kết quả cũ. Khi chỉ thay dữ liệu và đã build thành công image từ đúng mã hiện tại, có thể thêm `-SkipBuild`. Nếu vừa cập nhật mã nguồn, phải build lại, không thêm cờ này. Không cần cài lại Docker.
+
+Đọc báo cáo:
+
+```powershell
+Get-Content "$env:USERPROFILE\Downloads\KetQua_DuLieuMoi\run_report.json" -Raw -Encoding UTF8 |
+  ConvertFrom-Json |
+  Select-Object version,questions,solved,unanswered,llm_calls,seconds,peak_rss_mb
+```
+
+`llm_calls=0` trong offline; không phí API. `solved` chỉ đếm câu có đáp án, không xác nhận đáp án đúng. Nếu có đáp án chuẩn đi kèm, dùng công cụ đánh giá riêng như hướng dẫn bên dưới. Nếu chưa có đáp án chuẩn, cần kiểm tra lại bằng Excel trước khi kết luận độ chính xác.
+
+### Dữ liệu ẩn khi chấm
+
+Bộ ẩn thuộc môi trường chấm của BTC. Bài nộp nhận đường dẫn qua `--xlsx-dir`, `--queries` và ghi kết quả theo `--output`; không gắn cứng thư mục trên máy đội thi. Không đóng gói bộ dữ liệu ẩn hoặc bộ đáp án vào bài nộp. Các tham số OpenRouter vẫn được tiếp nhận theo giao diện chấm đã mô tả trong README.
+
+### Giới hạn cần hiểu đúng
+
+Bản 2.1.1 đã đối chiếu đúng 20/20 đợt 1 và 30/30 đợt 2 offline. Bộ mới có thể dùng cách hỏi, cấu trúc bảng hoặc phép tính chưa được selector hỗ trợ; không thể suy ra chắc chắn đúng 100% bộ mới. Offline để trống câu chưa hỗ trợ. Hybrid có thể chuyển câu chưa hỗ trợ sang đúng mô hình Qwen qua OpenRouter, có thể phát sinh phí; không tự chuyển sang Gemini hoặc mô hình khác. Không cần huấn luyện lại chỉ để đổi thư mục dữ liệu.
+
 ## Chạy nhanh trên Windows, không phát sinh phí API
 
 Giải nén source vào `G:\BC\AI2026\AI26C0069-main`. Nếu chọn vị trí khác, thay đường dẫn tương ứng. Giữ nguyên Docker/Python đã cài; không cần pandas, OpenAI SDK hay Node.
