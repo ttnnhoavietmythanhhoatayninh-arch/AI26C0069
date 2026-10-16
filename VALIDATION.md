@@ -1,3 +1,16 @@
+# Kiểm chứng bản 2.0.1 — sửa từ log API người dùng
+
+- 77/77 unit/integration tests đạt.
+- Public 1 offline: 14/20 đúng, 6 trống, không đáp án sai không rỗng.
+- Public 2 offline: 19/30 đúng, 11 trống, không đáp án sai không rỗng.
+- Hai dạng được bổ sung: xếp hạng con trực tiếp đúng chiều; mức tăng theo nhóm/giới/tuổi/năm. Test dùng tên nhóm, số liệu, năm khác công khai và có nhóm gây nhiễu.
+- Giữ last_plan và tọa độ ô lỗi cho việc sửa kế hoạch; không kết luận nguyên nhân chính xác của kế hoạch câu 10 cũ vì log chưa có plan đó.
+- Người dùng đối chiếu API thật ở bản 2.0.0: 3/5 đúng (11,12,13), 1 sai thứ tự (5), 1 trống (10), 8 request. Tổng mức hạch toán từ log: 0.003665027 USD. Đây là bằng chứng người dùng cung cấp, không phải lượt API tôi tự chạy.
+- Chưa chạy lại API thật ở 2.0.1. Hai câu lỗi đã được kiểm chứng offline; không cần gọi API cho hai câu đó trong hybrid.
+- Docker 2.0.0 đã build/run thành công trên Actions sau bản sửa quyền CSV; xem workflow mới cho bản vá này.
+
+## Kiểm chứng lịch sử 2.0.0
+
 # Kiểm chứng bản 2.0.0 — 17/10/2026
 
 Môi trường sạch Python 3.12, cài offline từ ba wheel đã khóa hash. Không dùng API key thật.

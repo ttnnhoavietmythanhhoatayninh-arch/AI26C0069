@@ -121,7 +121,7 @@ class Book:
         if name not in self._map or not re.fullmatch(r'[A-Z]+[1-9]\d*',coord):raise WorkbookError('Invalid cell reference')
         r,c=coordinate_to_tuple(coord);s=self._map[name]
         v=s.value(r,c)
-        if v is None:raise WorkbookError('Missing, error or uncached formula cell')
+        if v is None:raise WorkbookError(f'Missing, error or uncached formula cell: {s.ref(r,c)}')
         return v
     def context(self,query,max_bytes=160000):
         """Lossless cell values for small files; whole-sheet packs with row coordinates.

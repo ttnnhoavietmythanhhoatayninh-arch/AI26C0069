@@ -10,6 +10,9 @@ def numeric(v):
     except ValueError:return None
 
 def hierarchy_plan(book,q):
+    from .ranking import ranking_plan
+    ranking=ranking_plan(book,q)
+    if ranking is not None:return ranking
     p=financial(book,q)
     if p is not None:return p
     ps=[p for s in book.sheets if (p:=index_comparison(s,q)) is not None]

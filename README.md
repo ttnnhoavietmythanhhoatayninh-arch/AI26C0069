@@ -2,9 +2,9 @@
 
 Giải pháp hỏi đáp Excel cho Vòng Khu vực Bảng C, Cuộc thi Sáng tạo trẻ Quốc gia về AI 2026.
 
-**Bản 2.0.0**: đọc nhiều sheet và ô gộp, bảo toàn tọa độ ô/tiêu đề, tính bằng Python trước; câu chưa hỗ trợ dùng đúng `qwen/qwen3.7-flash` qua OpenRouter. Mô hình trả kế hoạch JSON, không sinh mã để `exec`. Không chứa API key hoặc bộ đáp án.
+**Bản 2.0.1**: đọc nhiều sheet và ô gộp, bảo toàn tọa độ ô/tiêu đề, tính bằng Python trước; câu chưa hỗ trợ dùng đúng `qwen/qwen3.7-flash` qua OpenRouter. Mô hình trả kế hoạch JSON, không sinh mã để `exec`. Không chứa API key hoặc bộ đáp án.
 
-**Kết quả thực đo, offline**: public 1 đúng 14/20, 6 rỗng; public 2 đúng 17/30, 13 rỗng; 0 đáp án sai không rỗng trong cả hai lượt. 73 test đạt. Không diễn giải kết quả này thành chất lượng Qwen hoặc điểm bộ ẩn. Xem [VALIDATION.md](VALIDATION.md).
+**Kết quả thực đo, offline**: public 1 đúng 14/20, 6 rỗng; public 2 đúng 19/30, 11 rỗng; 0 đáp án sai không rỗng trong cả hai lượt. 77 test đạt. Không diễn giải kết quả này thành chất lượng Qwen hoặc điểm bộ ẩn. Xem [VALIDATION.md](VALIDATION.md).
 
 ## Chạy nhanh trên Windows, không phát sinh phí API
 
@@ -84,7 +84,7 @@ Thử ít câu cần LLM trước khi chạy toàn bộ. Mỗi câu dự trù t�
 
 402: kiểm tra quyền sử dụng/hạn mức/credit của khóa; không lặp chạy cả bộ hoặc tự đổi mô hình. 401: khóa không hợp lệ. Key BTC cung cấp khi chấm được truyền qua tham số; bài nộp không mang key cá nhân.
 
-**Lượt Qwen thật chưa được kiểm chứng trong môi trường tạo bản này.** Không dùng khóa đã lộ trong ZIP cũ; nếu còn hoạt động, thu hồi và cấp lại.
+**Qwen thật: người dùng đã cung cấp log 5 câu, đối chiếu đúng 3, sai 1, trống 1 ở bản 2.0.0. Bản 2.0.1 đã sửa hai dạng sai/trống và kiểm chứng offline; chưa có lượt Qwen thật mới sau sửa.** Không dùng khóa đã lộ trong ZIP cũ; nếu còn hoạt động, thu hồi và cấp lại.
 
 ## Đánh giá public data
 
@@ -141,3 +141,13 @@ Workflow GitHub Actions thực hiện unit test, build Linux amd64, chạy conta
 - Token BTC: input + reasoning, không thay reasoning bằng completion. Thiếu usage ghi unknown.
 
 Xem [docs/COMPLIANCE.md](docs/COMPLIANCE.md), [docs/MIGRATION.md](docs/MIGRATION.md) và [VALIDATION.md](VALIDATION.md).
+
+## Bản vá 2.0.1 từ lượt API thực tế
+
+- Tôn trọng yêu cầu highest-to-lowest hoặc lowest-to-highest khi root là ranking/table sort.
+- Xếp hạng con trực tiếp bằng độ sâu phân cấp; không lẫn cháu/chỉ tiêu khác.
+- Chọn subgroup theo giới tính, độ tuổi, nhóm cột và năm; tính mức tăng từ ô nguồn.
+- Khi tham chiếu ô thiếu, thông báo rõ tọa độ và giữ last_plan trong báo cáo để sửa kế hoạch.
+- Request thất bại ghi cost_usd=null thay vì 0; xem cost_accounted_usd để biết mức đã hạch toán/dự trù.
+
+Sau khi cập nhật mã, chạy không có -SkipBuild để image chứa bản mới. Dùng hybrid cho vận hành bình thường: Python xử lý trước, Qwen chỉ xử lý phần còn lại. -Solver llm là chế độ thử buộc gọi API, bỏ qua lời giải local.

@@ -1,4 +1,6 @@
 import json
+import re
+import copy
 import time
 from .api import APIError
 from .budget import Budget,BudgetError
@@ -12,7 +14,13 @@ class SolveError(RuntimeError):
 
 
 def execute(book,plan,query):
-    ev=Evaluator(book,query=query);value=ev.run(plan['expression'])
+    # The question's explicit direction overrides a contradictory root ranking.
+    expression=plan['expression']
+    direction=re.search(r'\bfrom (highest to lowest|lowest to highest)\b',query,re.I)
+    if direction and isinstance(expression,dict) and (expression.get('op')=='rank_labels' or (expression.get('op')=='table' and 'sort_by' in expression)):
+        expression=copy.deepcopy(expression)
+        expression['descending']=direction[1].lower()=='highest to lowest'
+    ev=Evaluator(book,query=query);value=ev.run(expression)
     fmt=inferred_format(query)
     if fmt=={'type':'auto'} or (isinstance(value,list) and isinstance(plan.get('format'),dict) and plan['format'].get('type')=='tuple'):
         fmt=plan.get('format',fmt)
@@ -45,7 +53,8 @@ def solve(book,query,client,mode,deadline,limit='0.09',max_context=200000):
         text=None
         try:
             text=client.complete(messages,budget,deadline,max_tokens=3072 if attempt<2 else 6144)
-            plan=parse_plan(text);ans,ev=execute(book,plan,query)
+            plan=parse_plan(text);trace['last_plan']=plan
+            ans,ev=execute(book,plan,query)
             trace.update(method='llm',plan=plan,evidence=ev,cost_usd=float(budget.spent),
                          attempts=client.calls-calls_before,cost_accounted_usd=float(budget.spent),prompt_tokens=client.prompt_tokens-pt,
                          completion_tokens=client.completion_tokens-ct)
@@ -62,6 +71,6 @@ def solve(book,query,client,mode,deadline,limit='0.09',max_context=200000):
             messages=messages[:2]+([{'role':'assistant','content':text[:16000]}] if text else [])+[{'role':'user','content':'Previous plan was invalid: '+last+'. Return a corrected JSON plan using only supported expressions. Re-check all sheet names and coordinates.'}]
         except BudgetError as e:
             last=str(e);break
-    trace.update(method='llm',attempts=client.calls-calls_before,cost_accounted_usd=float(budget.spent),
+    trace.update(method='llm',cost_usd=None,attempts=client.calls-calls_before,cost_accounted_usd=float(budget.spent),
                  prompt_tokens=client.prompt_tokens-pt,completion_tokens=client.completion_tokens-ct)
     raise SolveError(last,trace)

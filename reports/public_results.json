@@ -1,8 +1,8 @@
 {
-  "version": "2.0.0",
+  "version": "2.0.1",
   "date": "2026-10-17",
   "python": "3.12.14",
-  "tests_passed": 73,
+  "tests_passed": 77,
   "mode": "offline",
   "live_api_tested": false,
   "windows_gui_tested": false,
@@ -14,19 +14,27 @@
       "answered": 14,
       "wrong_nonempty": 0,
       "unanswered": 6,
-      "seconds": 0.3178,
-      "peak_rss_mib": 23.74609375,
+      "seconds": 0.3678,
+      "peak_rss_mib": 23.85546875,
       "llm_calls": 0
     },
     "public2": {
       "questions": 30,
-      "exact_match": 17,
-      "answered": 17,
+      "exact_match": 19,
+      "answered": 19,
       "wrong_nonempty": 0,
-      "unanswered": 13,
-      "seconds": 0.6874,
-      "peak_rss_mib": 30.11328125,
+      "unanswered": 11,
+      "seconds": 0.7115,
+      "peak_rss_mib": 30.1015625,
       "llm_calls": 0
     }
+  },
+  "user_reported_live_api_2_0_0": {
+    "questions": 5,
+    "correct": 3,
+    "wrong_nonempty": 1,
+    "unanswered": 1,
+    "requests": 8,
+    "cost_accounted_usd": "0.003665027"
   }
 }
