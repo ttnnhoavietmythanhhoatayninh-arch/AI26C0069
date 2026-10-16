@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "date": "2026-10-17",
   "python": "3.12.14",
-  "tests_passed": 72,
+  "tests_passed": 73,
   "mode": "offline",
   "live_api_tested": false,
   "windows_gui_tested": false,

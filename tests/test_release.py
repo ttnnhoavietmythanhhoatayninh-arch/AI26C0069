@@ -52,6 +52,13 @@ class ReleaseTests(unittest.TestCase):
         b.sheets[0].merged=[(1,2,1,3),(1,4,1,5)]
         q='By how much did the total assets measured at fair value on a recurring basis increase between July 31, 2023 and July 31, 2024, in millions of dollars? Answer with only the integer, without commas or units.'
         p=local_plan(b,q);self.assertIsNotNone(p);self.assertEqual(execute(b,p,q)[0],'200')
+    @unittest.skipUnless(__import__('os').name=='posix','POSIX permissions only')
+    def test_csv_can_be_read_after_root_container_writes_it(self):
+        import stat
+        from excelqa.contract import write_results
+        with tempfile.TemporaryDirectory() as d:
+            p=Path(d)/'out.csv';write_results(p,[{'id':1,'answer':'1'}])
+            self.assertTrue(stat.S_IMODE(p.stat().st_mode) & stat.S_IROTH)
     def test_no_truncation_at_eighty_rows(self):
         b=self.book({'Long':[['Code','Amount']]+[[i,i*2] for i in range(1,151)]})
         self.assertEqual(b.get('Long!B151'),300)

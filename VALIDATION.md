@@ -4,7 +4,7 @@ Môi trường sạch Python 3.12, cài offline từ ba wheel đã khóa hash. K
 
 | Kiểm tra | Kết quả |
 |---|---|
-| Unit/integration | 72 test đạt |
+| Unit/integration | 73 test đạt |
 | Public 1 offline | 14/20 đúng; 6 rỗng; 0 đáp án sai không rỗng |
 | Public 2 offline | 17/30 đúng; 13 rỗng; 0 đáp án sai không rỗng |
 | Hai câu của ZIP gốc | Đều đúng trong lượt public 2, tính từ workbook |

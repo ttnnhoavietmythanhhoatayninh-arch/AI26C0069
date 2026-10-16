@@ -50,7 +50,10 @@ def write_results(path,rows):
     try:
         with os.fdopen(fd,'w',encoding='utf-8',newline='') as f:
             w=csv.DictWriter(f,fieldnames=['id','answer'],extrasaction='raise')
-            w.writeheader(); w.writerows(rows); f.flush();os.fsync(f.fileno())
+            w.writeheader(); w.writerows(rows); f.flush()
+            # Container may run as root; the external judge must still read CSV.
+            if hasattr(os,'fchmod'):os.fchmod(f.fileno(),0o644)
+            os.fsync(f.fileno())
         with open(tmp,encoding='utf-8',newline='') as f:
             rd=csv.DictReader(f)
             if rd.fieldnames!=['id','answer'] or [r['id'] for r in rd]!=ids:
